@@ -10,6 +10,10 @@ class UsersController < ApplicationController
     @users = User.paginate(page: params[:page])
   end
 
+  def show
+    @microposts = @user.microposts.paginate(page: params[:page])
+  end
+
   def new
     @user = User.new
   end
@@ -19,7 +23,7 @@ class UsersController < ApplicationController
     if @user.save
       @user.send_activation_email
       flash[:info] = 'Please check your email to activate your account.'
-      redirect_to root_url
+      redirect_to @user
     else
       render :new
     end
